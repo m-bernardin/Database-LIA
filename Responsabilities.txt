@@ -1,3 +1,14 @@
 Deliverable 1:
 Entity-relationship (ER) diagram: Mathieu
 Logical diagram: Kiavash
+
+Deliverable 2:
+Correct ER diagram: Mathieu
+Logical Schema: Kiavash
+Normalization: Mathieu
+Database Schema (DDL): Mathieu
+Data creation (DML): Kiavash
+Sequence: Kiavash
+Indexes: Kiavash
+Alter statements: Kiavash
+Report: Mathieu
