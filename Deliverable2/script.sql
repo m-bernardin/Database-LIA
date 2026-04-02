@@ -1,0 +1,13 @@
+CREATE DATABASE DoctorsOffice;
+USE DoctorsOffice;
+
+CREATE TABLE VisitDetails;
+CREATE TABLE Bill;
+CREATE TABLE Visit;
+CREATE TABLE Appointment;
+CREATE TABLE InsuranceCompany;
+CREATE TABLE Patient;
+CREATE TABLE Claim;
+CREATE TABLE Payment;
+CREATE TABLE PaysFor;
+CREATE TABLE Dentist;
