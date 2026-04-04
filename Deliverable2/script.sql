@@ -39,8 +39,24 @@ CREATE TABLE VisitDetails(
     treatmentCost MONEY CONSTRAINT Dentist_fee_CheckPositive CHECK(fee>=0)
 );
 CREATE TABLE Bill(
-    
+    billID INT CONSTRAINT PK_Bill PRIMARY KEY,
+    visitID INT CONSTRAINT Bill_Visit_FK FOREIGN KEY REFERENCES Visit CONSTRAINT Bill_Visit_NotNull NOT NULL,
+    remainingSum MONEY
 );
-CREATE TABLE Claim;
-CREATE TABLE Payment;
-CREATE TABLE PaysFor;
+CREATE TABLE Payment(
+    paymentID INT CONSTRAINT PK_Payment PRIMARY KEY,
+    patientID INT CONSTRAINT Payment_Patient_FK FOREIGN KEY REFERENCES Patient CONSTRAINT Payment_Patient_NotNull NOT NULL,
+    amntPaid MONEY
+);
+CREATE TABLE Claim(
+    claimID INT CONSTRAINT PK_Claim PRIMARY KEY,
+    companyID INT CONSTRAINT Claim_InsuranceCompany_FK FOREIGN KEY REFERENCES InsuranceCompany CONSTRAINT Claim_InsuranceCompany_NotNull NOT NULL,
+    patientID INT CONSTRAINT Claim_Patient_FK FOREIGN KEY REFERENCES Patient CONSTRAINT Claim_Patient_NotNull NOT NULL,
+    paymentID INT CONSTRAINT Claim_Payment_FK FOREIGN KEY REFERENCES Payment CONSTRAINT Claim_Payment_NotNull NOT NULL,
+    amnt MONEY
+);
+CREATE TABLE PaysFor(
+    paysForID INT CONSTRAINT PK_PaysFor PRIMARY KEY,
+    billID INT CONSTRAINT PaysFor_Bill_FK FOREIGN KEY REFERENCES Bill CONSTRAINT PaysFor_Bill_NotNull NOT NULL,
+    paymentID INT CONSTRAINT PaysFor_Payment_FK FOREIGN KEY REFERENCES Payment CONSTRAINT PaysFor_Payment_NotNull NOT NULL
+);
