@@ -18,20 +18,29 @@ CREATE TABLE Dentist(
     fName VARCHAR(20),
     lName VARCHAR(20),
     email VARCHAR(40),
-    address VARCHAR(40)
+    address VARCHAR(40),
+    fee MONEY CONSTRAINT Dentist_fee_CheckPositive CHECK(fee>=0)
 );
 CREATE TABLE Appointment(
     appointmentID INT CONSTRAINT PK_Appointment PRIMARY KEY,
     patientID INT CONSTRAINT Appointment_Patient_FK FOREIGN KEY REFERENCES Patient CONSTRAINT Appointment_Patient_NotNull NOT NULL, -- TODO add ON DELETE
-    dentistID INT CONSTRAINT Appointment_Dentist_FK FOREIGN KEY REFERENCES Dentist CONSTRAINT Appointment_Dentist_NotNull NOT NULL,
+    dentistID INT CONSTRAINT Appointment_Dentist_FK FOREIGN KEY REFERENCES Dentist CONSTRAINT Appointment_Dentist_NotNull NOT NULL, -- TODO add ON DELETE
     date DATE,
     time TIME
 );
 CREATE TABLE Visit(
+    visitID INT CONSTRAINT PK_Visit PRIMARY KEY
+);
+CREATE TABLE VisitDetails(
+    detailsID INT CONSTRAINT PK_VisitDetails PRIMARY KEY,
+    diagnosis VARCHAR(50),
+    treatmentDescription VARCHAR(75),
+    symptoms VARCHAR(75),
+    treatmentCost MONEY CONSTRAINT Dentist_fee_CheckPositive CHECK(fee>=0)
+);
+CREATE TABLE Bill(
     
 );
-CREATE TABLE VisitDetails;
-CREATE TABLE Bill;
 CREATE TABLE Claim;
 CREATE TABLE Payment;
 CREATE TABLE PaysFor;
