@@ -9,6 +9,6 @@ Normalization: Mathieu
 Database Schema (DDL): Mathieu
 Data creation (DML): Kiavash
 Sequence: Kiavash
-Indexes: Kiavash
+Indexes: Mathieu
 Alter statements: Kiavash
 Report: Mathieu
