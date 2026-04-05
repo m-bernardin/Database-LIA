@@ -29,15 +29,15 @@ CREATE TABLE Appointment(
     time TIME
 );
 CREATE TABLE Visit(
-    visitID INT CONSTRAINT PK_Visit PRIMARY KEY
+    visitID INT CONSTRAINT PK_Visit PRIMARY KEY,
+    symptoms VARCHAR(150),
+    diagnosis VARCHAR(30)
 );
-CREATE TABLE VisitDetails(
-    detailsID INT CONSTRAINT PK_VisitDetails PRIMARY KEY,
-    diagnosis VARCHAR(50),
-    treatmentDescription VARCHAR(75),
-    symptoms VARCHAR(75),
-    treatmentCost MONEY CONSTRAINT Dentist_fee_CheckPositive CHECK(fee>=0)
-);
+CREATE TABLE Treatment(
+    treatmentID INT CONSTRAINT PK_Treatment PRIMARY KEY,
+    description VARCHAR(40),
+    cost MONEY CONSTRAINT Treatment_cost_Check CHECK(cost>=0)
+)
 CREATE TABLE Bill(
     billID INT CONSTRAINT PK_Bill PRIMARY KEY,
     visitID INT CONSTRAINT Bill_Visit_FK FOREIGN KEY REFERENCES Visit CONSTRAINT Bill_Visit_NotNull NOT NULL,
