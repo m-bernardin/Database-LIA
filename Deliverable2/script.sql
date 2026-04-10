@@ -40,23 +40,31 @@ CREATE TABLE Treatment(
 )
 CREATE TABLE Bill(
     billID INT CONSTRAINT PK_Bill PRIMARY KEY,
-    visitID INT CONSTRAINT Bill_Visit_FK FOREIGN KEY REFERENCES Visit CONSTRAINT Bill_Visit_NotNull NOT NULL,
+    visitID INT CONSTRAINT Bill_Visit_FK FOREIGN KEY REFERENCES Visit CONSTRAINT Bill_Visit_NotNull NOT NULL, -- TODO add ON DELETE
     remainingSum MONEY
 );
 CREATE TABLE Payment(
     paymentID INT CONSTRAINT PK_Payment PRIMARY KEY,
-    patientID INT CONSTRAINT Payment_Patient_FK FOREIGN KEY REFERENCES Patient CONSTRAINT Payment_Patient_NotNull NOT NULL,
+    patientID INT CONSTRAINT Payment_Patient_FK FOREIGN KEY REFERENCES Patient CONSTRAINT Payment_Patient_NotNull NOT NULL, -- TODO add ON DELETE
     amntPaid MONEY
 );
 CREATE TABLE Claim(
     claimID INT CONSTRAINT PK_Claim PRIMARY KEY,
-    companyID INT CONSTRAINT Claim_InsuranceCompany_FK FOREIGN KEY REFERENCES InsuranceCompany CONSTRAINT Claim_InsuranceCompany_NotNull NOT NULL,
-    patientID INT CONSTRAINT Claim_Patient_FK FOREIGN KEY REFERENCES Patient CONSTRAINT Claim_Patient_NotNull NOT NULL,
-    paymentID INT CONSTRAINT Claim_Payment_FK FOREIGN KEY REFERENCES Payment CONSTRAINT Claim_Payment_NotNull NOT NULL,
+    companyID INT CONSTRAINT Claim_InsuranceCompany_FK FOREIGN KEY REFERENCES InsuranceCompany CONSTRAINT Claim_InsuranceCompany_NotNull NOT NULL, -- TODO add ON DELETE
+    patientID INT CONSTRAINT Claim_Patient_FK FOREIGN KEY REFERENCES Patient CONSTRAINT Claim_Patient_NotNull NOT NULL, -- TODO add ON DELETE
+    paymentID INT CONSTRAINT Claim_Payment_FK FOREIGN KEY REFERENCES Payment CONSTRAINT Claim_Payment_NotNull NOT NULL, -- TODO add ON DELETE
     amnt MONEY
 );
 CREATE TABLE PaysFor(
     paysForID INT CONSTRAINT PK_PaysFor PRIMARY KEY,
-    billID INT CONSTRAINT PaysFor_Bill_FK FOREIGN KEY REFERENCES Bill CONSTRAINT PaysFor_Bill_NotNull NOT NULL,
-    paymentID INT CONSTRAINT PaysFor_Payment_FK FOREIGN KEY REFERENCES Payment CONSTRAINT PaysFor_Payment_NotNull NOT NULL
+    billID INT CONSTRAINT PaysFor_Bill_FK FOREIGN KEY REFERENCES Bill CONSTRAINT PaysFor_Bill_NotNull NOT NULL, -- TODO add ON DELETE
+    paymentID INT CONSTRAINT PaysFor_Payment_FK FOREIGN KEY REFERENCES Payment CONSTRAINT PaysFor_Payment_NotNull NOT NULL -- TODO add ON DELETE
 );
+
+-- TODO sequences
+
+-- TODO data creation
+
+-- TODO indexes
+
+-- TODO alters
