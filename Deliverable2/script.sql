@@ -10,14 +10,14 @@ CREATE TABLE Patient(
     patientID INT IDENTITY CONSTRAINT PK_Patient PRIMARY KEY,
     fName VARCHAR(20),
     lName VARCHAR(20),
-    email VARCHAR(40),
+    email VARCHAR(40) CONSTRAINT Patient_email_unique UNIQUE,
     address VARCHAR(40)
 );
 CREATE TABLE Dentist(
     dentistID INT IDENTITY CONSTRAINT PK_Dentist PRIMARY KEY,
     fName VARCHAR(20),
     lName VARCHAR(20),
-    email VARCHAR(40),
+    email VARCHAR(40) CONSTRAINT Dentist_email_unique UNIQUE,
     address VARCHAR(40),
     fee MONEY CONSTRAINT Dentist_fee_CheckPositive CHECK(fee>=0)
 );
@@ -67,5 +67,12 @@ CREATE TABLE PaysFor(
 -- TODO data creation
 
 -- TODO indexes
+CREATE INDEX PaysFor_billID_index ON PaysFor(billID);
+-- explanation:
+-- this index makes finding all payments relating to a specific bill much more efficient, through the PaysFor table
+
+CREATE INDEX Patient_fName_index ON Patient(fName);
+-- explanation
+-- often, we would be searching for patient solely on name, this index makes querying these names more efficient
 
 -- TODO alters
