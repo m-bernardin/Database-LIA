@@ -1,6 +1,6 @@
 CREATE DATABASE DentistOffice;
 USE DentistOffice;
--- data definition (DDL)
+
 CREATE TABLE InsuranceCompany(
     companyID INT CONSTRAINT PK_InsuranceCompany PRIMARY KEY,
     name VARCHAR(30),
@@ -30,7 +30,7 @@ CREATE TABLE Appointment(
 );
 CREATE TABLE Visit(
     visitID INT CONSTRAINT PK_Visit PRIMARY KEY,
-    apptID INT CONSTRAINT Visit_Appointment_FK FOREIGN KEY REFERENCES Appointment ON DELETE SET NULL, -- on delete set null as if an appointment is removed we still need to keep visit details for financial records
+    apptID INT CONSTRAINT Visit_Appointment_FK FOREIGN KEY REFERENCES Appointment ON DELETE SET NULL CONSTRAINT Visit_Appintment_NotNull NOT NULL, -- on delete set null as if an appointment is removed we still need to keep visit details for financial records
     symptoms VARCHAR(150),
     diagnosis VARCHAR(30)
 );
@@ -46,13 +46,13 @@ CREATE TABLE Bill(
 );
 CREATE TABLE Payment(
     paymentID INT CONSTRAINT PK_Payment PRIMARY KEY,
-    patientID INT CONSTRAINT Payment_Patient_FK FOREIGN KEY REFERENCES Patient ON DELETE SET NULL, -- on delete set null as if an patient is removed we still need to keep payment details for financial records
+    patientID INT CONSTRAINT Payment_Patient_FK FOREIGN KEY REFERENCES Patient ON DELETE SET NULL CONSTRAINT Payment_Patient_NotNull NOT NULL, -- on delete set null as if an patient is removed we still need to keep payment details for financial records
     amntPaid MONEY
 );
 CREATE TABLE Claim(
     claimID INT CONSTRAINT PK_Claim PRIMARY KEY,
-    companyID INT CONSTRAINT Claim_InsuranceCompany_FK FOREIGN KEY REFERENCES InsuranceCompany ON DELETE SET NULL CONSTRAINT Claim_InsuranceCompany_NotNull, -- on delete set null as if an insurance company is removed we still need to keep claim details for financial records
-    patientID INT CONSTRAINT Claim_Patient_FK FOREIGN KEY REFERENCES Patient ON DELETE SET NULL, -- on delete set null as if an patient is removed we still need to keep claim details for financial records
+    companyID INT CONSTRAINT Claim_InsuranceCompany_FK FOREIGN KEY REFERENCES InsuranceCompany ON DELETE SET NULL CONSTRAINT Claim_InsuranceCompany_NotNull NOT NULL, -- on delete set null as if an insurance company is removed we still need to keep claim details for financial records
+    patientID INT CONSTRAINT Claim_Patient_FK FOREIGN KEY REFERENCES Patient ON DELETE SET NULL CONSTRAINT Claim_Patient_NotNull NOT NULL, -- on delete set null as if an patient is removed we still need to keep claim details for financial records
     paymentID INT CONSTRAINT Claim_Payment_FK FOREIGN KEY REFERENCES Payment ON DELETE CASCADE CONSTRAINT Claim_Payment_NotNull NOT NULL, -- on delete cascade as if a payment is removed we must no longer care about the financial records
     amnt MONEY
 );
@@ -66,7 +66,7 @@ CREATE TABLE PaysFor(
 
 -- TODO data creation
 
--- indexes
+-- TODO indexes
 CREATE INDEX PaysFor_billID_index ON PaysFor(billID);
 -- explanation:
 -- this index makes finding all payments relating to a specific bill much more efficient, through the PaysFor table

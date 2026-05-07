@@ -1,0 +1,8 @@
+fixes for deliverable 2:
+- fixed script to exclude NOT NULLs stopping script from executing
+- added data insertion
+- added treatmentSequence for pk on treatment
+- added alter statements 
+-
+
+additions in deliverable 3:
