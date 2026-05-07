@@ -1,0 +1,11 @@
+USE DentistOffice;
+DROP TABLE PaysFor;
+DROP TABLE Claim;
+DROP TABLE Payment;
+DROP TABLE Bill;
+DROP TABLE Treatment;
+DROP TABLE Visit;
+DROP TABLE Appointment;
+DROP TABLE Dentist;
+DROP TABLE Patient;
+DROP TABLE InsuranceCompany;
