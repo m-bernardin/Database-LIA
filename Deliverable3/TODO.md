@@ -12,4 +12,18 @@
 
 ## New from deliverable 3:
 
-- 
+- 3 complex queries
+  - 1-2 sentence justification
+- 2 views
+  - motivate with, at least in part, security
+- 2 procedures to enforce business rules
+  - explanation of purpose
+  - together, must have
+    - parameters
+    - conditional logic
+    - call a function
+    - try...catch
+- update balance trigger
+- make user roles
+- backup schema explanation
+- report
