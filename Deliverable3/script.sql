@@ -127,7 +127,7 @@ CREATE INDEX Patient_fName_index ON Patient(fName);
 -- explanation
 -- often, we would be searching for a patient solely on name, this index makes querying these names more efficient
 
--- TODO alters
+-- alters
 ALTER TABLE Patient
 ADD balance MONEY;
 
@@ -143,7 +143,21 @@ ADD CONSTRAINT Treatment_cost_Check CHECK(cost>=0);
 
 
 -- procedures
-
+GO
+CREATE FUNCTION getTotal(@billID INT) RETURNS MONEY AS
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM Bill WHERE billID=@billID)RETURN -1;
+    DECLARE @dentistsFee MONEY,
+            @treatmentFee MONEY,
+            @visitID INT=(SELECT visitID FROM Bill WHERE billID=@billID);
+    DECLARE @apptID INT=(SELECT apptID FROM Visit WHERE visitID=@visitID),
+            @treatmentID INT=(SELECT treatmentID FROM Treatment WHERE visitID=@visitID);
+    DECLARE @dentistID INT=(SELECT dentistID FROM Appointment WHERE apptID=@apptID);
+    SET @dentistsFee=(SELECT fee FROM Dentist WHERE dentistID=@dentistID);
+    SET @treatmentFee=(SELECT cost FROM Treatment WHERE treatmentID=@treatmentID);
+    IF(@treatmentFee IS NULL)SET @treatmentFee=0; -- might cause problems??
+    RETURN @treatmentFee+@dentistsFee;
+END;
 
 -- trigger
 GO
