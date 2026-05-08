@@ -3,11 +3,11 @@
 ## Revision for deliverable 2:
 
 - fix normalization (?)
-- make script execute
+- ~~make script execute~~
   - remove NOT NULLs on columns with SET NULLs
-- write sequence
-- write sample data
-- write alters
+- ~~write sequence~~
+- ~~write sample data~~
+- ~~write alters~~
 - 
 
 ## New from deliverable 3:
