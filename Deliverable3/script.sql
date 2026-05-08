@@ -136,3 +136,31 @@ ADD CONSTRAINT Treatment_cost_Check CHECK(cost>=0);
 
 -- deliverbale 3:
 
+-- complex queries
+
+-- views
+
+
+-- procedures
+
+-- trigger
+GO
+CREATE TRIGGER autoBillPatient ON Bill INSTEAD OF INSERT AS
+BEGIN
+    DECLARE @patientID INT=(SELECT patientID FROM Patient WHERE patientID IN (
+        SELECT patientID FROM Appointment WHERE apptID IN (
+            SELECT apptID FROM Visit WHERE visitID IN (
+                SELECT visitID FROM inserted))));
+
+END;
+
+
+-- roles and users
+CREATE LOGIN mBernardin WITH PASSWORD='mBernardin9!66';
+CREATE USER mBernardin FOR LOGIN mBernardin;
+CREATE ROLE dba;
+GRANT ALL ON ALL TO dba;
+
+
+
+-- backup strategy
