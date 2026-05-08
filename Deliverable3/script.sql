@@ -45,7 +45,8 @@ CREATE TABLE Treatment(
 )
 CREATE TABLE Bill(
     billID INT CONSTRAINT PK_Bill PRIMARY KEY,
-    visitID INT CONSTRAINT Bill_Visit_FK FOREIGN KEY REFERENCES Visit ON DELETE CASCADE CONSTRAINT Bill_Visit_NotNull NOT NULL -- on delete cascade as if were removing a visit we must no longer care about the financial records
+    visitID INT CONSTRAINT Bill_Visit_FK FOREIGN KEY REFERENCES Visit ON DELETE CASCADE CONSTRAINT Bill_Visit_NotNull NOT NULL, -- on delete cascade as if were removing a visit we must no longer care about the financial records
+    paymentStatus CHAR(7)
 );
 CREATE TABLE Payment(
     paymentID INT CONSTRAINT PK_Payment PRIMARY KEY,
@@ -102,7 +103,7 @@ INSERT INTO Bill VALUES (1, 1),
                         (3, 3),
                         (4, 4),
                         (5, 5);
-INSERT INTO Payment VALUES  (1, 1, 250),
+INSERT INTO Payment VALUES  (1, 1, 370),
                             (2, 2, 180),
                             (3, 3, 100),
                             (4, 4, 600),
@@ -136,13 +137,8 @@ ADD CONSTRAINT Treatment_cost_Check CHECK(cost>=0);
 
 -- deliverbale 3:
 
--- complex queries
 
-
--- views
-
-
--- procedures
+-- extras (functions)
 GO
 CREATE FUNCTION getTotal(@billID INT) RETURNS MONEY AS
 BEGIN
@@ -158,6 +154,35 @@ BEGIN
     IF(@treatmentFee IS NULL)SET @treatmentFee=0; -- might cause problems??
     RETURN @treatmentFee+@dentistsFee;
 END;
+
+GO
+CREATE FUNCTION getPaid(@billID INT) RETURNS MONEY AS
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM Bill WHERE billID=@billID)RETURN -1;
+    DECLARE @amntPaid MONEY,@total MONEY=0;
+    DECLARE paymentCursor CURSOR FOR
+    SELECT amntPaid FROM Payment WHERE paymentID IN(SELECT paymentID FROM PaysFor WHERE billID=@billID);
+    OPEN paymentCursor;
+    FETCH NEXT FROM paymentCursor INTO @amntPaid;
+    WHILE(@@FETCH_STATUS=0)
+    BEGIN
+        IF(@amntPaid IS NULL)SET @amntPaid=0;
+        SET @total=@total+@amntPaid;
+        FETCH NEXT FROM paymentCursor INTO @amntPaid;
+    END;
+    RETURN @total;
+END; 
+
+-- complex queries
+
+
+-- views
+GO
+CREATE VIEW billStatusView AS
+SELECT billID'ID', dbo.getTotal(billID)'Bill total', dbo.getPaid(billID)'Amount Paid', paymentStatus'Status'  FROM Bill;
+-- procedures
+-- GO
+-- CREATE PROCEDURE
 
 -- trigger
 GO

@@ -14,6 +14,7 @@
 
 - 3 complex queries
   - 1-2 sentence justification
+  - one by K?
 - 2 views
   - motivate with, at least in part, security
 - 2 procedures to enforce business rules
@@ -24,6 +25,6 @@
     - call a function
     - try...catch
 - update balance trigger
-- make user roles
-- backup schema explanation
+- make user roles (K?)
+- backup schema explanation (K?)
 - report
