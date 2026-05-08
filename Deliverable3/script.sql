@@ -138,10 +138,12 @@ ADD CONSTRAINT Treatment_cost_Check CHECK(cost>=0);
 
 -- complex queries
 
+
 -- views
 
 
 -- procedures
+
 
 -- trigger
 GO
