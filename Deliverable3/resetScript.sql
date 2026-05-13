@@ -9,3 +9,8 @@ DROP TABLE Appointment;
 DROP TABLE Dentist;
 DROP TABLE Patient;
 DROP TABLE InsuranceCompany;
+DROP VIEW billStatusView;
+DROP FUNCTION getTotal;
+DROP FUNCTION getPaid;
+DROP FUNCTION getPayer;
+DROP SEQUENCE treatmentSequence;

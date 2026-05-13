@@ -98,11 +98,11 @@ INSERT INTO Treatment VALUES(NEXT VALUE FOR treatmentSequence, 1, 'Cavity fillin
                             (NEXT VALUE FOR treatmentSequence, 3, 'Dental cleaning', 100),
                             (NEXT VALUE FOR treatmentSequence, 4, 'Wisdom tooth extraction', 600),
                             (NEXT VALUE FOR treatmentSequence, 5, 'Fluoride treatment', 120);
-INSERT INTO Bill VALUES (1, 1),
-                        (2, 2),
-                        (3, 3),
-                        (4, 4),
-                        (5, 5);
+INSERT INTO Bill VALUES (1, 1,'Pending'),
+                        (2, 2,'Pending'),
+                        (3, 3,'Pending'),
+                        (4, 4,'Pending'),
+                        (5, 5,'Pending');
 INSERT INTO Payment VALUES  (1, 1, 370),
                             (2, 2, 180),
                             (3, 3, 100),
@@ -136,7 +136,6 @@ ALTER TABLE Treatment
 ADD CONSTRAINT Treatment_cost_Check CHECK(cost>=0);
 
 -- deliverbale 3:
-
 
 -- extras (functions)
 GO
@@ -173,26 +172,50 @@ BEGIN
     RETURN @total;
 END; 
 
+
+GO
+CREATE FUNCTION getPayer(@billID INT) RETURNS VARCHAR(41) AS
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM Bill WHERE billID=@billID)RETURN 'No such bill';
+    DECLARE @visitID INT=(SELECT visitID FROM Bill WHERE billID=@billID);
+    DECLARE @apptID INT=(SELECT apptID FROM Visit WHERE visitID=@visitID);
+    DECLARE @patientID INT=(SELECT patientID FROM Appointment WHERE apptID=@apptID);
+    DECLARE @name VARCHAR(40)=(SELECT CONCAT(fName,' ',lName) FROM Patient WHERE patientID=@patientID);
+    RETURN @name;
+END;
+
 -- complex queries
+
+-- This query is interesting as it allows an employee such as a receptionist to see all appointments which are scheduled for today.
+GO
+SELECT apptID'ID',patientID'Patient',dentistID'Responsible dentist',time'Time of the day' FROM Appointment WHERE date=GETDATE();
+
+SELECT 
 
 
 -- views
+
+-- This view allows the status of bills to be seen independently of any other information. This is helpful as it isolates only the information that someone who billing 
+-- information is useful to needs to know. This improves security by not revealing other sensitive, personal information to such an employee.
 GO
 CREATE VIEW billStatusView AS
-SELECT billID'ID', dbo.getTotal(billID)'Bill total', dbo.getPaid(billID)'Amount Paid', paymentStatus'Status'  FROM Bill;
+SELECT dbo.getPayer(billID)'Billed to', dbo.getTotal(billID)'Bill total', dbo.getPaid(billID)'Amount Paid', paymentStatus'Status'  FROM Bill;
+
 -- procedures
 -- GO
 -- CREATE PROCEDURE
 
 -- trigger
 GO
-CREATE TRIGGER autoBillPatient ON Bill INSTEAD OF INSERT AS
+CREATE TRIGGER autoBillPatient ON Bill AFTER INSERT AS
 BEGIN
     DECLARE @patientID INT=(SELECT patientID FROM Patient WHERE patientID IN (
         SELECT patientID FROM Appointment WHERE apptID IN (
             SELECT apptID FROM Visit WHERE visitID IN (
-                SELECT visitID FROM inserted))));
-
+                SELECT visitID FROM inserted)))),
+            @amount MONEY=dbo.getTotal((SELECT billID FROM inserted));
+    IF(@amount=-1 OR @amount IS NULL)RAISERROR('Error billing patient',16,1);
+    UPDATE Patient SET balance=balance+@amount;
 END;
 
 
