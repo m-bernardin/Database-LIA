@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="2241" dy="2081" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2322" dy="2080" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -20,7 +20,7 @@
           <mxGeometry height="40" width="100" x="-413" y="-1100" as="geometry" />
         </mxCell>
         <mxCell id="FI39mm8fv8QjOdUj5zEo-132" parent="WIyWlLk6GJQsqaUBKTNV-1" style="whiteSpace=wrap;html=1;align=center;fillColor=#e51400;fontColor=#ffffff;strokeColor=#B20000;" value="billingID" vertex="1">
-          <mxGeometry height="40" width="100" x="-480" y="-628" as="geometry" />
+          <mxGeometry height="40" width="100" x="-580" y="-628" as="geometry" />
         </mxCell>
         <mxCell id="FI39mm8fv8QjOdUj5zEo-133" parent="WIyWlLk6GJQsqaUBKTNV-1" style="whiteSpace=wrap;html=1;align=center;fillColor=#e51400;fontColor=#ffffff;strokeColor=#B20000;" value="apptID" vertex="1">
           <mxGeometry height="40" width="100" x="-580" y="-1018" as="geometry" />
@@ -55,14 +55,13 @@
         <mxCell id="FI39mm8fv8QjOdUj5zEo-147" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="FI39mm8fv8QjOdUj5zEo-146" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="FI39mm8fv8QjOdUj5zEo-127">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="150" y="-898" />
-              <mxPoint x="150" y="-800" />
+              <mxPoint x="221" y="-800" />
               <mxPoint x="-90" y="-800" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="FI39mm8fv8QjOdUj5zEo-146" parent="WIyWlLk6GJQsqaUBKTNV-1" style="whiteSpace=wrap;html=1;align=center;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" value="companyID" vertex="1">
-          <mxGeometry height="40" width="100" x="80" y="-938" as="geometry" />
+          <mxGeometry height="40" width="100" x="171" y="-938" as="geometry" />
         </mxCell>
         <mxCell id="FI39mm8fv8QjOdUj5zEo-148" parent="WIyWlLk6GJQsqaUBKTNV-1" style="whiteSpace=wrap;html=1;align=center;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;" value="date" vertex="1">
           <mxGeometry height="40" width="100" x="-480" y="-1018" as="geometry" />
@@ -138,13 +137,13 @@
           <mxGeometry height="40" width="100" x="-380" y="-628" as="geometry" />
         </mxCell>
         <mxCell id="FI39mm8fv8QjOdUj5zEo-170" parent="WIyWlLk6GJQsqaUBKTNV-1" style="whiteSpace=wrap;html=1;align=center;fillColor=#e51400;fontColor=#ffffff;strokeColor=#B20000;" value="paysForID" vertex="1">
-          <mxGeometry height="40" width="100" x="-580" y="-548" as="geometry" />
+          <mxGeometry height="40" width="100" x="-580" y="-534" as="geometry" />
         </mxCell>
         <mxCell id="FI39mm8fv8QjOdUj5zEo-176" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="FI39mm8fv8QjOdUj5zEo-173" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="FI39mm8fv8QjOdUj5zEo-132">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="FI39mm8fv8QjOdUj5zEo-173" parent="WIyWlLk6GJQsqaUBKTNV-1" style="whiteSpace=wrap;html=1;align=center;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" value="billingID" vertex="1">
-          <mxGeometry height="40" width="100" x="-480" y="-548" as="geometry" />
+          <mxGeometry height="40" width="100" x="-480" y="-534" as="geometry" />
         </mxCell>
         <mxCell id="FI39mm8fv8QjOdUj5zEo-177" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="FI39mm8fv8QjOdUj5zEo-174" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="FI39mm8fv8QjOdUj5zEo-129">
           <mxGeometry relative="1" as="geometry">
@@ -155,7 +154,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="FI39mm8fv8QjOdUj5zEo-174" parent="WIyWlLk6GJQsqaUBKTNV-1" style="whiteSpace=wrap;html=1;align=center;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" value="paymentID" vertex="1">
-          <mxGeometry height="40" width="100" x="-380" y="-548" as="geometry" />
+          <mxGeometry height="40" width="100" x="-380" y="-534" as="geometry" />
         </mxCell>
         <mxCell id="FI39mm8fv8QjOdUj5zEo-175" parent="WIyWlLk6GJQsqaUBKTNV-1" style="whiteSpace=wrap;html=1;align=center;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;" value="amntPaid" vertex="1">
           <mxGeometry height="40" width="100" x="-263" y="-464" as="geometry" />
@@ -231,10 +230,16 @@
           <mxGeometry height="30" width="40" x="-480" y="-658" as="geometry" />
         </mxCell>
         <mxCell id="FI39mm8fv8QjOdUj5zEo-194" parent="WIyWlLk6GJQsqaUBKTNV-1" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=wrap;html=1;" value="PaysFor" vertex="1">
-          <mxGeometry height="30" width="61" x="-580" y="-578" as="geometry" />
+          <mxGeometry height="30" width="61" x="-580" y="-564" as="geometry" />
         </mxCell>
         <mxCell id="FI39mm8fv8QjOdUj5zEo-195" parent="WIyWlLk6GJQsqaUBKTNV-1" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=wrap;html=1;" value="Payment" vertex="1">
           <mxGeometry height="30" width="64" x="-362" y="-494" as="geometry" />
+        </mxCell>
+        <mxCell id="UnuNYk76M3UuauxQbpIt-0" parent="WIyWlLk6GJQsqaUBKTNV-1" style="whiteSpace=wrap;html=1;align=center;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;" value="paymentStatus" vertex="1">
+          <mxGeometry height="40" width="100" x="-480" y="-628" as="geometry" />
+        </mxCell>
+        <mxCell id="UnuNYk76M3UuauxQbpIt-1" parent="WIyWlLk6GJQsqaUBKTNV-1" style="whiteSpace=wrap;html=1;align=center;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;" value="balance" vertex="1">
+          <mxGeometry height="40" width="100" x="70" y="-938" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

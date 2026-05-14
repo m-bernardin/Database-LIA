@@ -42,7 +42,7 @@ CREATE TABLE Treatment(
     visitID INT CONSTRAINT Treatment_Visit_FK FOREIGN KEY REFERENCES Visit ON DELETE CASCADE CONSTRAINT Treatment_Visit_NotNull NOT NULL, -- on delete cascade as if were removing a visit we must no longer care about the financial records
     description VARCHAR(40),
     cost MONEY
-)
+);
 CREATE TABLE Bill(
     billID INT CONSTRAINT PK_Bill PRIMARY KEY,
     visitID INT CONSTRAINT Bill_Visit_FK FOREIGN KEY REFERENCES Visit ON DELETE CASCADE CONSTRAINT Bill_Visit_NotNull NOT NULL, -- on delete cascade as if were removing a visit we must no longer care about the financial records
@@ -66,11 +66,11 @@ CREATE TABLE PaysFor(
     paymentID INT CONSTRAINT PaysFor_Payment_FK FOREIGN KEY REFERENCES Payment ON DELETE CASCADE CONSTRAINT PaysFor_Payment_NotNull NOT NULL -- on delete cascade as if a payment is removed we must no longer care about the financial records
 );
 
--- TODO sequences
+-- sequences
 CREATE SEQUENCE treatmentSequence AS INT
 NO CACHE;
 
--- TODO data creation
+-- data creation
 INSERT INTO InsuranceCompany VALUES (1, 'SunLife Dental', 'Montreal'),
                                     (2, 'BlueCross Health', 'Toronto'),
                                     (3, 'Maple Insurance', 'Ottawa'),
@@ -135,9 +135,11 @@ ADD balance MONEY;
 ALTER TABLE Treatment
 ADD CONSTRAINT Treatment_cost_Check CHECK(cost>=0);
 
--- deliverbale 3:
+-- deliverable 3:
 
 -- extras (functions)
+
+-- This function returns the total amount to be paid for a single specified bill. If the bill is not found it instead returns -1.
 GO
 CREATE FUNCTION getTotal(@billID INT) RETURNS MONEY AS
 BEGIN
@@ -150,10 +152,12 @@ BEGIN
     DECLARE @dentistID INT=(SELECT dentistID FROM Appointment WHERE apptID=@apptID);
     SET @dentistsFee=(SELECT fee FROM Dentist WHERE dentistID=@dentistID);
     SET @treatmentFee=(SELECT cost FROM Treatment WHERE treatmentID=@treatmentID);
-    IF(@treatmentFee IS NULL)SET @treatmentFee=0; -- might cause problems??
+    IF(@treatmentFee IS NULL)SET @treatmentFee=0;
+    IF(@dentistsFee IS NULL)SET @dentistsFee=0;
     RETURN @treatmentFee+@dentistsFee;
 END;
 
+-- This function returns the total amount already paid for a single specified bill. If the bill is not found it instead returns -1.
 GO
 CREATE FUNCTION getPaid(@billID INT) RETURNS MONEY AS
 BEGIN
@@ -172,7 +176,7 @@ BEGIN
     RETURN @total;
 END; 
 
-
+-- This function returns the name of the patient responsible for paying for a single specified bill. If the bill is not found it instead returns 'No such bill'
 GO
 CREATE FUNCTION getPayer(@billID INT) RETURNS VARCHAR(41) AS
 BEGIN
@@ -275,7 +279,7 @@ BEGIN
     ELSE
     BEGIN
         UPDATE Bill SET paymentStatus='Pending' WHERE billID=@billID;
-        PRINT 'Bill status not updated; Bill is still has outstanding balance to be paid.';
+        PRINT 'Bill status not updated; Bill still has outstanding balance to be paid.';
     END;
 END;
 

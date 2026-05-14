@@ -12,10 +12,10 @@
 
 ## New from deliverable 3:
 
-- 3 complex queries
+- ~~3~~1 complex quer~~ies~~y
   - 1-2 sentence justification
   - one by K?
-- 2 views
+- ~~2 views~~
   - motivate with, at least in part, security
 - ~~2 procedures to enforce business rules~~
   - explanation of purpose
