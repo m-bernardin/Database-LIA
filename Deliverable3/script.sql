@@ -202,10 +202,37 @@ CREATE VIEW billStatusView AS
 SELECT dbo.getPayer(billID)'Billed to', dbo.getTotal(billID)'Bill total', dbo.getPaid(billID)'Amount Paid', paymentStatus'Status'  FROM Bill;
 
 -- procedures
--- GO
--- CREATE PROCEDURE
+
+-- This procedure ensures new patients being inserted follow proper conventions for certain attributes. These include names being formed solely of letters of the English
+-- alphabet and emails following the name@domain.extension format. If a rule is violated, the procedure raises an error which is then caught to set the success output variable
+-- to false (1). Then, if this varaible is false, the procedure prints an error message; Otherwise, it inserts the provided infromation into the patient table, prints a success
+-- message, and sets the success output variable to true (1).
+GO
+CREATE PROCEDURE standardNewPatient @fName VARCHAR(20), @lName VARCHAR(20), @email VARCHAR(40), @address VARCHAR(40), @success TINYINT OUTPUT AS
+BEGIN
+    BEGIN TRY
+        IF NOT(@fName LIKE '%[a-z]%' OR @fName LIKE '%[A-Z]%')RAISERROR('Invalid information provided',16,1);
+        IF NOT(@lName LIKE '%[a-z]%' OR @lName LIKE '%[A-Z]%')RAISERROR('Invalid information provided',16,1);
+        IF NOT(@email LIKE '%@%.%')RAISERROR('Invalid information provided',16,1);
+    END TRY
+    BEGIN CATCH
+        SET @success=1;
+    END CATCH;
+    IF(@success=1)PRINT 'Could not add patient; Invalid information was provided.';
+    ELSE
+    BEGIN
+        INSERT INTO Patient(fName,lName,email,address) VALUES (@fName,@lName,@email,@address);
+        PRINT 'New patient successfully added';
+        SET @success=0;
+    END;
+END;
+
+
 
 -- trigger
+
+-- This trigger follows the guidelines provided in the project instructions. It first inserts the data from the actual insert, then ensures the patient actually exists
+-- and the bill has a valid amount. If this verification fails, it rolls back the insertion; Otherwise, it updates the balance of the relevant patient.
 GO
 CREATE TRIGGER autoBillPatient ON Bill INSTEAD OF INSERT AS
 BEGIN
@@ -225,7 +252,7 @@ BEGIN
     END
     IF(@amount=-1 OR @amount IS NULL)
     BEGIN
-        RAISERROR('Error billing patient, no ',16,1);
+        RAISERROR('Error billing patient; Improper amount.',16,1);
         SET @success=1;
     END;
     IF(@success=1)ROLLBACK insertion;
@@ -233,7 +260,7 @@ BEGIN
 END;
 
 
--- roles and users
+-- roles and users (to be finished by Kiavash)
 CREATE LOGIN mBernardin WITH PASSWORD='mBernardin9!66';
 CREATE USER mBernardin FOR LOGIN mBernardin;
 CREATE ROLE dba;
@@ -241,4 +268,4 @@ GRANT ALL ON ALL TO dba;
 
 
 
--- backup strategy
+-- backup strategy (to be done by Kiavash)
