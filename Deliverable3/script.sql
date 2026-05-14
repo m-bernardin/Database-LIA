@@ -98,7 +98,7 @@ INSERT INTO Treatment VALUES(NEXT VALUE FOR treatmentSequence, 1, 'Cavity fillin
                             (NEXT VALUE FOR treatmentSequence, 3, 'Dental cleaning', 100),
                             (NEXT VALUE FOR treatmentSequence, 4, 'Wisdom tooth extraction', 600),
                             (NEXT VALUE FOR treatmentSequence, 5, 'Fluoride treatment', 120);
-INSERT INTO Bill VALUES (1, 1,'Pending'),
+INSERT INTO Bill VALUES (1, 1,'Paid'),
                         (2, 2,'Pending'),
                         (3, 3,'Pending'),
                         (4, 4,'Pending'),
@@ -188,7 +188,7 @@ END;
 
 -- This query is interesting as it allows an employee such as a receptionist to see all appointments which are scheduled for today, ordered by their time of day for ease of use.
 GO
-SELECT CONCAT(P.fName,' ',P.lName)'Patient',CONCAT(D.fName,' ',D.lName)'Dentist',time'Time of the day'
+SELECT CONCAT(P.fName,' ',P.lName)'Patient',CONCAT(D.fName,' ',D.lName)'Dentist',time'Time of day'
 FROM Appointment A JOIN Dentist D
     ON A.dentistID=D.dentistID JOIN Patient P
         ON A.dentistID=P.patientID
@@ -210,8 +210,28 @@ GROUP BY dentistID,fName,lName;
 -- information is useful to needs to know. This improves security by not revealing other sensitive, personal information to such an employee.
 GO
 CREATE VIEW billStatusView AS
-SELECT dbo.getPayer(billID)'Billed to', dbo.getTotal(billID)'Bill total', dbo.getPaid(billID)'Amount Paid', paymentStatus'Status' FROM Bill;
+SELECT dbo.getPayer(billID)'Billed to', dbo.getTotal(billID)'Bill total', dbo.getPaid(billID)'Amount paid', paymentStatus'Status' FROM Bill;
 
+-- This view is essentially a more detailed version of the billStatusView. It allows accounting staff to see exact billing details for each outstanding bill, while
+-- hiding sensitive patient medical info. This more detailed version is necessary as billStatusView is designed more for an employee filling a receiptionist-type role,
+-- who only needs to know what patients have bills to pay and how much they still have to pay, so that they can inform these patients. However, accounting staff must know 
+-- more statistical information on these patients. Although these employees only need to analyze bills which must still be paid.
+GO
+CREATE VIEW advancedBillingView AS
+SELECT  dbo.getPayer(billID)'Payer',
+        dbo.getTotal(billID)'Bill total',
+        dbo.getPaid(billID)'Amount paid',
+        (SELECT COUNT(*) FROM Payment WHERE paymentID IN (
+            SELECT paymentID FROM PaysFor P WHERE P.billID=B.billID))'Installments payed',
+        (((SELECT SUM(amntPaid) FROM Payment P WHERE paymentID IN (
+            SELECT paymentID FROM PaysFor WHERE billID=B.billID))/(dbo.getTotal(B.billID)))*100)'Percentage paid',
+        (((SELECT SUM(amnt) FROM Claim C WHERE C.paymentID IN (
+            SELECT paymentID FROM PaysFor P WHERE P.billID=B.billID))/(dbo.getTotal(B.billID)))*100)'Percentage claimed',
+        (SELECT name FROM InsuranceCompany I WHERE I.companyID IN (
+            SELECT companyID FROM Claim C WHERE C.paymentID IN (
+                SELECT paymentID FROM PaysFor P WHERE P.billID=B.billID)))'Insurer'
+FROM Bill B
+WHERE paymentStatus='Pending';
 -- procedures
 
 -- This procedure ensures new patients being inserted follow proper conventions for certain attributes. These include names being formed solely of letters of the English
