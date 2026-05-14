@@ -188,9 +188,9 @@ END;
 
 -- This query is interesting as it allows an employee such as a receptionist to see all appointments which are scheduled for today.
 GO
-SELECT apptID'ID',patientID'Patient',dentistID'Responsible dentist',time'Time of the day' FROM Appointment WHERE date=GETDATE();
+SELECT apptID'ID',CONCAT(P.fName,' ',P.lName)'Patient',CONCAT(D.fName,' ',D.lName)'Dentist',time'Time of the day' FROM Appointment A JOIN Dentist D ON A.dentistID=D.dentistID JOIN Patient P ON A.dentistID=P.patientID WHERE date=GETDATE();
 
-SELECT 
+-- SELECT 
 
 
 -- views
@@ -207,15 +207,29 @@ SELECT dbo.getPayer(billID)'Billed to', dbo.getTotal(billID)'Bill total', dbo.ge
 
 -- trigger
 GO
-CREATE TRIGGER autoBillPatient ON Bill AFTER INSERT AS
+CREATE TRIGGER autoBillPatient ON Bill INSTEAD OF INSERT AS
 BEGIN
+    BEGIN TRANSACTION insertion
+        INSERT INTO Bill SELECT * FROM inserted;
+    COMMIT;
     DECLARE @patientID INT=(SELECT patientID FROM Patient WHERE patientID IN (
         SELECT patientID FROM Appointment WHERE apptID IN (
             SELECT apptID FROM Visit WHERE visitID IN (
                 SELECT visitID FROM inserted)))),
-            @amount MONEY=dbo.getTotal((SELECT billID FROM inserted));
-    IF(@amount=-1 OR @amount IS NULL)RAISERROR('Error billing patient',16,1);
-    UPDATE Patient SET balance=balance+@amount;
+            @amount MONEY=dbo.getTotal((SELECT billID FROM inserted)),
+            @success TINYINT=0;
+    IF(@patientID IS NULL)
+    BEGIN
+        RAISERROR('Error billing patient; No such patient',16,1);
+        SET @success=1;
+    END
+    IF(@amount=-1 OR @amount IS NULL)
+    BEGIN
+        RAISERROR('Error billing patient, no ',16,1);
+        SET @success=1;
+    END;
+    IF(@success=1)ROLLBACK insertion;
+    ELSE UPDATE Patient SET balance=balance+@amount;
 END;
 
 
