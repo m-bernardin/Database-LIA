@@ -186,12 +186,23 @@ END;
 
 -- complex queries
 
--- This query is interesting as it allows an employee such as a receptionist to see all appointments which are scheduled for today.
+-- This query is interesting as it allows an employee such as a receptionist to see all appointments which are scheduled for today, ordered by their time of day for ease of use.
 GO
-SELECT apptID'ID',CONCAT(P.fName,' ',P.lName)'Patient',CONCAT(D.fName,' ',D.lName)'Dentist',time'Time of the day' FROM Appointment A JOIN Dentist D ON A.dentistID=D.dentistID JOIN Patient P ON A.dentistID=P.patientID WHERE date=GETDATE();
+SELECT CONCAT(P.fName,' ',P.lName)'Patient',CONCAT(D.fName,' ',D.lName)'Dentist',time'Time of the day'
+FROM Appointment A JOIN Dentist D
+    ON A.dentistID=D.dentistID JOIN Patient P
+        ON A.dentistID=P.patientID
+WHERE date=GETDATE()
+ORDER BY time;
 
--- SELECT 
+-- This query is interesting as it allows average visit costs per dentist to be analyzed by a relevant staff member. This allows the owner's of the office to see who is their
+-- biggest revenue maker, or who may be a good budget option for cost-sensitive patients.
+SELECT CONCAT(fName,' ',lName)'Dentist name', AVG(dbo.getTotal(billID))'Average' FROM Bill B JOIN Dentist D
+ON D.dentistID IN (SELECT dentistID FROM Appointment WHERE apptID IN (
+                    SELECT apptID FROM Visit WHERE visitID=B.visitID))
+GROUP BY dentistID,fName,lName;
 
+-- third complex query to be done by Kiavash
 
 -- views
 

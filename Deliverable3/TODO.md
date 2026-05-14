@@ -17,14 +17,14 @@
   - one by K?
 - 2 views
   - motivate with, at least in part, security
-- 2 procedures to enforce business rules
+- ~~2 procedures to enforce business rules~~
   - explanation of purpose
   - together, must have
-    - parameters
-    - conditional logic
-    - call a function
-    - try...catch
-- update balance trigger
+    - ~~parameters~~
+    - ~~conditional logic~~
+    - ~~call a function~~
+    - ~~try...catch~~
+- ~~update balance trigger~~
 - make user roles (K?)
 - backup schema explanation (K?)
 - report
