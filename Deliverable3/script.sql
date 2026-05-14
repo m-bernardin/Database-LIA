@@ -199,7 +199,7 @@ SELECT apptID'ID',CONCAT(P.fName,' ',P.lName)'Patient',CONCAT(D.fName,' ',D.lNam
 -- information is useful to needs to know. This improves security by not revealing other sensitive, personal information to such an employee.
 GO
 CREATE VIEW billStatusView AS
-SELECT dbo.getPayer(billID)'Billed to', dbo.getTotal(billID)'Bill total', dbo.getPaid(billID)'Amount Paid', paymentStatus'Status'  FROM Bill;
+SELECT dbo.getPayer(billID)'Billed to', dbo.getTotal(billID)'Bill total', dbo.getPaid(billID)'Amount Paid', paymentStatus'Status' FROM Bill;
 
 -- procedures
 
@@ -227,7 +227,26 @@ BEGIN
     END;
 END;
 
-
+-- This procedures allows users to rapidly update a single bills payment status. It does this by first getting the amount that must be paid on this bill and the amount that
+-- has already been paid off through user-defined functions. If either of these values are -1 (i.e. the provided bill does not exists), an error is raised; Otherwise, it
+-- compares these two values. If the amount already paid is higher than the total to be paid, it sets the bills payment status to paid; Otherwise, it sets it pending.
+GO
+CREATE PROCEDURE updateBillStatus @billID INT AS
+BEGIN
+    DECLARE @total MONEY=(dbo.getTotal(@billID)),
+            @amntPaid MONEY=(dbo.getPaid(@billID));
+    IF(@total=-1 OR @amntPaid=-1)RAISERROR('No such bill to update...',16,1);
+    ELSE IF(@amntPaid>=@total)
+    BEGIN
+        UPDATE Bill SET paymentStatus='Paid' WHERE billID=@billID;
+        PRINT 'Bill status updated; Bill is paid off.';
+    END;
+    ELSE
+    BEGIN
+        UPDATE Bill SET paymentStatus='Pending' WHERE billID=@billID;
+        PRINT 'Bill status not updated; Bill is still has outstanding balance to be paid.';
+    END;
+END;
 
 -- trigger
 
